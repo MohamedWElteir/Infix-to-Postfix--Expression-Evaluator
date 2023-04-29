@@ -12,7 +12,7 @@ public class Stack_Array implements Stack {
 
     }
 
-    @Override
+
     public boolean push(Object data) {
         if (isFull()) {
             return false;
@@ -25,22 +25,22 @@ public class Stack_Array implements Stack {
     @Override
     public Object pop() {
         if (!isEmpty()) {
-            return arr[top--];
+            return  arr[top--];
 
         } else {
             System.out.println("Stack is Empty, can't pop");
 
-            return -1;
+            return (char) -1;
         }
     }
     @Override
     public Object peek() {
         if (isEmpty()) {
             System.out.println("Stack is Empty, can't peek");
-            return -1;
+            return  -1;
 
         } else {
-            return arr[top];
+            return  arr[top];
         }
     }
 

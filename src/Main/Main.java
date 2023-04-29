@@ -1,6 +1,8 @@
 package Main;
 
-import Stack.Stack_Linked;
+import Operations.Evaluate;
+import Operations.InfixToPostfix;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,17 +29,23 @@ public class Main extends JFrame {
         // Create a button to perform the operation
         JButton performButton = new JButton("Perform");
         performButton.addActionListener((ActionEvent e) -> {
+            // Get the input from the text field
             String input = inputField.getText();
 
-            if (infixToPostfixButton.isSelected()) {
-                String output = Stack_Linked.infixToPostfix(input);
-                outputLabel.setText("Output: " + output);
-            } else if (postfixEvalButton.isSelected()) {
-                double output = Stack_Linked.evaluate(input);
-                outputLabel.setText("Output: " + output);
-            } else {
-                outputLabel.setText("No operation selected");
-            }
+            // Perform the selected operation
+                outputLabel.setForeground(Color.BLACK);
+                if (infixToPostfixButton.isSelected()) { // Infix to Postfix
+                    String output = InfixToPostfix.infixToPostfix(input);
+                    outputLabel.setText("Output: " + output);
+
+                } else if (postfixEvalButton.isSelected()) { // Expression Evaluation
+                    String output = (Evaluate.evaluate(input));
+
+                    outputLabel.setText("Output: " + output);
+                } else { // No operation selected
+                    outputLabel.setForeground(Color.RED);
+                    outputLabel.setText("No operation selected");
+                }
 
         });
 

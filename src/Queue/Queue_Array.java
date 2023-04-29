@@ -14,6 +14,8 @@ public class Queue_Array implements Queue{
         @Override
     public void enqueue(Object data) {
         if (isFull()) {
+            System.out.println("Queue is full");
+
         } else if (isEmpty()) {
             front = rear = 0;
             arr[front] = data;
