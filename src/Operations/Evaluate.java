@@ -4,28 +4,45 @@ package Operations;
 public class Evaluate {
     public static String evaluate(String expression) {
 
-        // Converting the expression from infix to postfix, so it is easier to work with
-        String postfix = InfixToPostfix.infixToPostfix(expression);
 
+        if (expression.contains(" ") && endsWithOperator(expression)){ // expression is in postfix form
+            return evaluatePostfix(expression);
+        }
+        else if (isBalanced(expression)) { // expression is in infix form and is balanced
+            return evaluatePostfix(InfixToPostfix.infixToPostfix(expression));
+        }
+        else { // expression is in infix form and is unbalanced
+            return "Unbalanced expression";
+        }
+    }
+    static boolean endsWithOperator(String expression) { // Checks if the expression ends with an operator
+        return  expression.endsWith("+") ||
+                expression.endsWith("-") ||
+                expression.endsWith("*") ||
+                expression.endsWith("/") ||
+                expression.endsWith("^") ||
+                expression.endsWith("%");
+    }
+
+
+    public static String evaluatePostfix(String postfixExpression) { // Evaluates a postfix expression
         Stack.Stack_Linked operandStack = new Stack.Stack_Linked();
 
-        for (String token : postfix.split(" ")) { // The spacing for distinguishing between a single vs multi-digit operands
-            if (Character.isDigit(token.charAt(0))) {
+
+        // The spacing for distinguishing between a single vs multi-digit operands
+        for (String token : postfixExpression.split(" ")) {
+
+            if (Character.isDigit(token.charAt(0))) { // If the token is a digit
                 operandStack.push(Double.parseDouble(token));
             }
-            else if (operandStack.isEmpty()|| operandStack.size() == 1) { // In case of an unbalanced expression
-                System.err.println("Invalid expression");
-                return "Invalid expression";
+            else if (operandStack.isEmpty() || operandStack.size() == 1) { // In case of an unbalanced postfixExpression
+                System.err.println("Invalid Expression");
+                return "Invalid Expression";
 
             }
-            else {
+            else { // If the token is not a digit
                 double x = (double) operandStack.pop();
                 double y = (double) operandStack.pop();
-                // if a token is only a negative sign, then it is a unary operator,
-                // and we only pop one operand
-                if (token.equals("-") && x == 0) {
-                    operandStack.push(-y);
-                }
 
                 /* Switch case for the operators */
                 switch (token) {
@@ -36,18 +53,37 @@ public class Evaluate {
                     case "^" -> operandStack.push(Math.pow(y, x)); // Using the Math.pow() method
                     case "/" -> {
                         if (x == 0) { // In case of division by zero
-                            System.out.println("Cannot divide by zero");
                             return "Cannot divide by zero";
                         }
                         operandStack.push(y / x);
                     }
-                    default -> {
-                        return "Unbalanced expression";
+                    default -> { // In case of an invalid postfixExpression
+                        return "Unbalanced Expression";
                     }
                 }
             }
         }
+
         return String.valueOf(operandStack.pop());
     }
 
+    // Checks if the expression is in infix or postfix form
+    public static String infixOrPostfix(String expression) {
+        if (expression.contains(" ") && endsWithOperator(expression))
+            return "Notation: postfix";
+        else if (expression.contains(" ") && !endsWithOperator(expression))
+            return "";
+        return "Notation: infix";
+    }
+
+    static boolean isBalanced(String expression){ // Checks if the expression is balanced
+        int counter = 0;
+        for (Character ch : expression.toCharArray()){
+            if (ch.equals('(')) counter++;
+            if (ch.equals(')')) counter--;
+        }
+        return counter == 0;
+
+    }
 }
+

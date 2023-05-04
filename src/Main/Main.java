@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.Serial;
 
+import static Operations.Evaluate.infixOrPostfix;
+
 
 public class Main extends JFrame {
 
@@ -23,25 +25,29 @@ public class Main extends JFrame {
         // Create a text field for user input
         JTextField inputField = new JTextField(25);
 
-        // Create a label to display the output
-        JLabel outputLabel = new JLabel();
+
+        // Create labels
+        JLabel outputLabel = new JLabel("Enter an expression and select an operation");
+        JLabel Note = new JLabel("Separate the operands and operators with spaces only in postfix");
+        Note.setForeground(Color.BLUE);
 
         // Create a button to perform the operation
         JButton performButton = new JButton("Perform");
         performButton.addActionListener((ActionEvent e) -> {
-            // Get the input from the text field
-            String input = inputField.getText();
 
-            // Perform the selected operation
-                outputLabel.setForeground(Color.BLACK);
+        // Get the input from the text field
+        String input = inputField.getText();
+
+        // Perform the selected operation
+         outputLabel.setForeground(Color.BLACK);
+
                 if (infixToPostfixButton.isSelected()) { // Infix to Postfix
-                    String output = InfixToPostfix.infixToPostfix(input);
-                    outputLabel.setText("Output: " + output);
+                    outputLabel.setText("Output: " + InfixToPostfix.infixToPostfix(input));
 
                 } else if (postfixEvalButton.isSelected()) { // Expression Evaluation
-                    String output = (Evaluate.evaluate(input));
+                    outputLabel.setText("Output: " + Evaluate.evaluate(input));
+                    Note.setText(infixOrPostfix(input));
 
-                    outputLabel.setText("Output: " + output);
                 } else { // No operation selected
                     outputLabel.setForeground(Color.RED);
                     outputLabel.setText("No operation selected");
@@ -60,6 +66,7 @@ public class Main extends JFrame {
         panel.add(inputField);
         panel.add(performButton);
         panel.add(outputLabel);
+        panel.add(Note);
 
         // Set the window properties
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
