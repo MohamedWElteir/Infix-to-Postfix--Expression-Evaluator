@@ -7,7 +7,7 @@ import java.util.StringJoiner;
 
 import static Operations.Evaluate.endsWithOperator;
 
-// main method to convert from infix to postfix
+
 public class InfixToPostfix {
 
     public static String infixToPostfix(String expression) {
